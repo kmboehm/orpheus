@@ -30,9 +30,13 @@ for file_name in file_names:
 
 #### Install other dependencies
 ```bash
-conda install einops lightning wandb torchmetrics pandas numpy h5py datasets transformers scipy scikit-learn seaborn matplotlib statsmodels -c huggingface -c conda-forge
+conda install einops lightning wandb torchmetrics pandas numpy h5py datasets transformers evaluate scipy scikit-learn seaborn matplotlib statsmodels -c huggingface -c conda-forge
 
 pip install -U 'jsonargparse[signatures]>=4.26.1'
+
+pip install accelerate -U
+
+pip install "dill<0.3.5"
 ```
 
 ### Prepare data
@@ -57,15 +61,28 @@ Adjust any parameters to suit your system in the config file.
 
 `python orpheus/main.py fit --config orpheus/vision/config.yaml`
 
-Logs are in `outputs/training_logs`, and checkpoints are in `outputs/models`. Select the checkpoint with the lowest validation loss.
+Logs are in `outputs/training_logs`, and checkpoints are in `outputs/vision-models`. Select the checkpoint with the lowest validation loss.
 
 ### infer with vision model
-`python orpheus/main.py predict --config orpheus/vision/config.yaml --ckpt_path outputs/models/{best_model}.ckpt`
+```bash
+wandb disabled
+python orpheus/main.py predict --config orpheus/vision/config.yaml --ckpt_path outputs/vision-models/{best_model}.ckpt
+wandb enabled
+```
 
 Predictions are stored as individual `.pt` files in `preds/visual/{split}` named by `case_id` in the dataframe you provide, and the whole-slide embeddings are stored where you designate in the `output_visual_embedding_path`.
 
 ### train language model
+`python orpheus/language/train.py --df_path scratch/example.csv`
 
+Logs and checkpoinst are in `outputs/text-models`. Select the checkpoint with the lowest validation loss.
+
+### infer with language model
+```bash
+wandb disabled
+python orpheus/language/infer.py --df_path scratch/example.csv --ckpt_path outputs/text-models/{best_model}
+wandb enabled
+```
 
 ### train multimodal model
 

@@ -71,7 +71,7 @@ class TileTransformer(pl.LightningModule):
     
     def training_step(self, batch, batch_idx):
         y_hat = self.forward(batch['x'])['y_hat']
-        loss = self.calculate_loss(y_hat, batch['y'])
+        loss = self.calculate_loss(y_hat, batch['y'].view(-1, 1))
         self.log_all(loss, y_hat, batch['y'], "train")
         return loss
     
@@ -81,11 +81,14 @@ class TileTransformer(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         y_hat = self.forward(batch['x'])['y_hat']
-        loss = self.calculate_loss(y_hat, batch['y'])
+        loss = self.calculate_loss(y_hat, batch['y'].view(-1, 1))
         self.log_all(loss, y_hat, batch['y'], "val")
 
     def log_all(self, loss, y_hat, y, subset):
-        logging_kwargs = {"on_step": True, "on_epoch": True, "sync_dist": True}
+        logging_kwargs = {"on_step": True,
+                          "on_epoch": True,
+                          "sync_dist": True,
+                          "batch_size": y.shape[0]}
 
         mse_metric = getattr(self, f"{subset}_mse")
         mse_metric(y_hat.reshape(-1), y.reshape(-1))
@@ -105,6 +108,8 @@ class TileTransformer(pl.LightningModule):
         output = self.forward(batch['x'])
         y_hat, emb = output['y_hat'], output['emb']
         emb_output_filenames = batch["output_visual_embedding_path"]
+        if not os.path.exists(os.path.dirname(emb_output_filenames[0])):
+            os.makedirs(os.path.dirname(emb_output_filenames[0]))
         for i, emb_output_filename in enumerate(emb_output_filenames):
             torch.save(emb[i].cpu(), emb_output_filename)
         for i, y_hat_i in enumerate(y_hat):

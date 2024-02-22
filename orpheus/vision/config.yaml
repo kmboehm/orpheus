@@ -23,7 +23,7 @@ trainer:
           monitor: val_loss
           filename: "{epoch:02d}-{val_loss:.4f}"
           save_last: True
-          dirpath: outputs/models
+          dirpath: outputs/vision-models
       - class_path: pytorch_lightning.callbacks.LearningRateMonitor
         init_args:
           logging_interval: step

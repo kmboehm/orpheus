@@ -28,8 +28,8 @@ class EmbeddingDataset(Dataset):
     def __getitem__(self, index: int):
         row = self.df.iloc[index]
         return {
-            "x": torch.load(row["input_visual_embedding_path"]),
-            "y": row["score"],
+            "x": torch.load(row["input_visual_embedding_path"]).float(),
+            "y": torch.tensor(row["score"]).float(),
             "case_id": row["case_id"],
             "output_visual_embedding_path": row["output_visual_embedding_path"],
             "split": row["split"],

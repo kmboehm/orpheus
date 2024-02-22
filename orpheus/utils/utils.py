@@ -29,11 +29,11 @@ def make_example_data(n=100):
     scores = np.random.rand(n)
     intput_visual_embedding_paths = [f"scratch/input/{case_id}.pt" for case_id in case_ids]
     for pt_path in intput_visual_embedding_paths:
-        torch.save(torch.randn(np.random.randint(5,10), 768), pt_path)
+        torch.save(torch.randn(np.random.randint(5,10), 768, dtype=torch.float), pt_path)
     text = [f"this is case {case_id}" for case_id in case_ids]
     splits = np.random.choice(["train", "val", "test"], n)
-    output_visual_embedding_paths = [f"scratch/output/{case_id}.pt" for case_id in case_ids]
-    output_linguistic_embedding_paths = [f"scratch/output/{case_id}.pt" for case_id in case_ids]
+    output_visual_embedding_paths = [f"scratch/output/vision/{case_id}.pt" for case_id in case_ids]
+    output_linguistic_embedding_paths = [f"scratch/output/text/{case_id}.pt" for case_id in case_ids]
     df = pd.DataFrame({
         "case_id": case_ids,
         "score": scores,
