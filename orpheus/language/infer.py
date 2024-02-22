@@ -56,6 +56,7 @@ if __name__ == "__main__":
     ARGS = PARSER.parse_args()
 
     DF = pd.read_csv(ARGS.df_path)
+    DF = DF[DF["output_linguistic_embedding_path"] != "NONE"]
     validate_dataframe(DF)
 
     for SET_TYPE in ["train", "val", "test"]:

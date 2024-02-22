@@ -43,12 +43,12 @@ pip install "dill<0.3.5"
 - expects .csv file with columns:
     - **case_id**: any identifier for the image-text pair
     - **score**: float value within [0, 1]
-    - **input_visual_embedding_path**: path to `.pt` file containing CTransPath embeddings derived using STAMP
-    - **text**: text from synoptic pathology report
+    - **input_visual_embedding_path**: path to `.pt` file containing CTransPath embeddings derived using STAMP. `NONE` for rows without images.
+    - **text**: text from synoptic pathology report. `NONE` for rows without text.
     - **split**: one of [train,val,test]
-    - **output_visual_embedding_path**: desired location of `.pt` file containing whole-slide image embedding derived using Orpheus visual model
-    - **output_linguistic_embedding_path**: desired location of `.pt` file containing aggregate text embedding derived using Orpheus visual model
-    - **output_multimodal_embedding_path**: desired location of `.pt` file containing multimodal Orpheus-derived text-image embedding
+    - **output_visual_embedding_path**: desired location of `.pt` file containing whole-slide image embedding derived using Orpheus visual model. `NONE` for rows without images.
+    - **output_linguistic_embedding_path**: desired location of `.pt` file containing aggregate text embedding derived using Orpheus visual model. `NONE` for rows without text.
+    - **output_multimodal_embedding_path**: desired location of `.pt` file containing multimodal Orpheus-derived text-image embedding. `NONE` for rows with one missing modality.
 
 If you like, you can create an example dataset in `orpheus/scratch` using `python orpheus/utils/utils.py`
 

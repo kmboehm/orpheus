@@ -51,6 +51,7 @@ class MultimodalEmbeddingDataModule(pl.LightningDataModule):
         self.save_hyperparameters()
 
         self.df = pd.read_csv(dataframe_path)
+        self.df = self.df[self.df["output_multimodal_embedding_path"] != "NONE"]
         validate_dataframe(self.df)
 
     def setup(self, stage: str) -> None:

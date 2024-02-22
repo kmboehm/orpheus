@@ -13,10 +13,10 @@ def validate_dataframe(df):
     assert "output_linguistic_embedding_path" in df.columns, "df lacks 'output_linguistic_embedding_path' column"
     assert len(df) > 0, "df is empty"
 
-    assert set(df['split'].tolist()) - set(["train", "val", "test"]) == set(), "split column should only contain 'train', 'val', or 'test'"
+    assert set(df['split'].tolist()) - set(["train", "val", "test"]) == set(), f"split column should only contain 'train', 'val', or 'test', but contains {set(df['split'].tolist()) - set(['train', 'val', 'test'])}"
 
     assert not df.case_id.duplicated().any(), "case_id is not unique"
-    assert not df.isnull().values.any(), "df contains NaNs"
+    assert not df[["case_id", "score", "input_visual_embedding_path", "text", "split", "output_visual_embedding_path", "output_multimodal_embedding_path"]].isnull().values.any(), "df contains NaNs"
 
     assert np.all([os.path.exists(pt_path) for pt_path in df.input_visual_embedding_path]), "Not all input_visual_embedding_paths exist"
     assert np.all([0.0 <= s <= 1.0 for s in df.score]), "Scores should be in [0, 1]"

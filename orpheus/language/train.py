@@ -37,6 +37,7 @@ if __name__ == "__main__":
     MODEL.cuda()
     
     DF = pd.read_csv(ARGS.df_path)
+    DF = DF[DF["output_linguistic_embedding_path"] != "NONE"]
     validate_dataframe(DF)
 
     TRAIN_DATASET = load_dataset(DF[DF.split == "train"])
