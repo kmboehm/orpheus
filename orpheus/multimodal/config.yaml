@@ -1,0 +1,42 @@
+model:
+    class_path: multimodal.model.TensorFusionNetwork
+    init_args:
+        lr: 5e-5
+        post_fusion_dim: 64
+        proj_dim: 96
+        weight_decay: 0.
+        dropout: 0.3
+        warm_up_steps: 500
+        lr_decay: 0.9995
+        scheduler_type: lambda
+data:
+    class_path: multimodal.dataset.MultimodalEmbeddingDataModule
+    init_args:
+        dataframe_path: scratch/example.csv
+        num_workers: 2
+        batch_size: 8
+trainer:
+    accelerator: gpu
+    devices: [1, 2]
+    max_epochs: 40
+    check_val_every_n_epoch: 1
+    gradient_clip_val: 0.5
+    accumulate_grad_batches: 1
+    callbacks:
+      - class_path: pytorch_lightning.callbacks.ModelCheckpoint
+        init_args:
+          save_top_k: 5
+          mode: min
+          monitor: val_loss
+          filename: "{epoch:02d}-{val_loss:.4f}"
+          save_last: True
+          dirpath: outputs/multimodal-models
+      - class_path: pytorch_lightning.callbacks.LearningRateMonitor
+        init_args:
+          logging_interval: step
+    logger:
+        class_path: WandbLogger
+        init_args:
+            name: example-multimodal
+            project: Orpheus
+            save_dir: outputs/training_logs

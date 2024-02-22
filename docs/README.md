@@ -46,8 +46,9 @@ pip install "dill<0.3.5"
     - **input_visual_embedding_path**: path to `.pt` file containing CTransPath embeddings derived using STAMP
     - **text**: text from synoptic pathology report
     - **split**: one of [train,val,test]
-    - **output_visual_embedding_path**: desired location of `.pt` file containing whole-slide image embedding derived using Orpheus' visual model
-    - **output_linguistic_embedding_path**: desired location of `.pt` file containing aggregate text embedding derived using Orpheus' visual model
+    - **output_visual_embedding_path**: desired location of `.pt` file containing whole-slide image embedding derived using Orpheus visual model
+    - **output_linguistic_embedding_path**: desired location of `.pt` file containing aggregate text embedding derived using Orpheus visual model
+    - **output_multimodal_embedding_path**: desired location of `.pt` file containing multimodal Orpheus-derived text-image embedding
 
 If you like, you can create an example dataset in `orpheus/scratch` using `python orpheus/utils/utils.py`
 
@@ -63,7 +64,7 @@ Adjust any parameters to suit your system in the config file.
 
 Logs are in `outputs/training_logs`, and checkpoints are in `outputs/vision-models`. Select the checkpoint with the lowest validation loss.
 
-### infer with vision model
+### embed with vision model
 ```bash
 wandb disabled
 python orpheus/main.py predict --config orpheus/vision/config.yaml --ckpt_path outputs/vision-models/{best_model}.ckpt
@@ -75,16 +76,26 @@ Predictions are stored as individual `.pt` files in `preds/visual/{split}` named
 ### train language model
 `python orpheus/language/train.py --df_path scratch/example.csv`
 
-Logs and checkpoinst are in `outputs/text-models`. Select the checkpoint with the lowest validation loss.
+Logs and checkpoints are in `outputs/text-models`. Select the checkpoint with the lowest validation loss.
 
-### infer with language model
+### embed with language model
 ```bash
 wandb disabled
 python orpheus/language/infer.py --df_path scratch/example.csv --ckpt_path outputs/text-models/{best_model}
 wandb enabled
 ```
+Predictions are stored as individual `.pt` files in `preds/linguistic/{split}` named by `case_id` in the dataframe you provide, and the whole-slide embeddings are stored where you designate in the `output_linguistic_embedding_path`.
 
 ### train multimodal model
+`python orpheus/main.py fit --config orpheus/multimodal/config.yaml`
 
+Logs and checkpoints are in `outputs/multimodal-models`. Select the checkpoint with the lowest validation loss.
 
-## 
+## embed with multimodal model
+```bash
+wandb disabled
+python orpheus/main.py predict --config orpheus/multimodal/config.yaml --ckpt_path outputs/multimodal-models/{best_model}.ckpt
+wandb enabled
+```
+
+Predictions are stored as individual `.pt` files in `preds/multimodal/{split}` named by `case_id` in the dataframe you provide, and the whole-slide embeddings are stored where you designate in the `multimodal_embedding_path`.

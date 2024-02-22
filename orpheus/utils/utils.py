@@ -34,6 +34,7 @@ def make_example_data(n=100):
     splits = np.random.choice(["train", "val", "test"], n)
     output_visual_embedding_paths = [f"scratch/output/vision/{case_id}.pt" for case_id in case_ids]
     output_linguistic_embedding_paths = [f"scratch/output/text/{case_id}.pt" for case_id in case_ids]
+    output_multimodal_embedding_paths = [f"scratch/output/multimodal/{case_id}.pt" for case_id in case_ids]
     df = pd.DataFrame({
         "case_id": case_ids,
         "score": scores,
@@ -41,7 +42,8 @@ def make_example_data(n=100):
         "text": text,
         "split": splits,
         "output_visual_embedding_path": output_visual_embedding_paths,
-        "output_linguistic_embedding_path": output_linguistic_embedding_paths
+        "output_linguistic_embedding_path": output_linguistic_embedding_paths,
+        "output_multimodal_embedding_path": output_multimodal_embedding_paths
     })
     df.to_csv("scratch/example.csv", index=False)
 
