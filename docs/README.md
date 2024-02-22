@@ -98,4 +98,4 @@ python orpheus/main.py predict --config orpheus/multimodal/config.yaml --ckpt_pa
 wandb enabled
 ```
 
-Predictions are stored as individual `.pt` files in `preds/multimodal/{split}` named by `case_id` in the dataframe you provide, and the whole-slide embeddings are stored where you designate in the `multimodal_embedding_path`.
+Predictions are stored as individual `.pt` files in `preds/multimodal/{split}` named by `case_id` in the dataframe you provide, and the multimodal embeddings are stored where you designate in the `multimodal_embedding_path`.
