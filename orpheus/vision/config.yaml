@@ -1,0 +1,35 @@
+model:
+    class_path: vision.model.TileTransformer
+    init_args:
+        preds_output_dir: "preds/visual"
+data:
+    class_path: vision.dataset.EmbeddingDataModule
+    init_args:
+        dataframe_path: scratch/example.csv
+        num_workers: 4
+        batch_size: 1
+trainer:
+    accelerator: gpu
+    devices: [0, 1]
+    max_epochs: 5
+    accumulate_grad_batches: 4
+    check_val_every_n_epoch: 1
+    gradient_clip_val: 0.5
+    callbacks:
+      - class_path: pytorch_lightning.callbacks.ModelCheckpoint
+        init_args:
+          save_top_k: 5
+          mode: min
+          monitor: val_loss
+          filename: "{epoch:02d}-{val_loss:.4f}"
+          save_last: True
+          dirpath: outputs/models
+      - class_path: pytorch_lightning.callbacks.LearningRateMonitor
+        init_args:
+          logging_interval: step
+    logger:
+        class_path: WandbLogger
+        init_args:
+            name: example-vision
+            project: Orpheus
+            save_dir: outputs/training_logs
