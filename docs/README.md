@@ -1,6 +1,6 @@
 # Orpheus
 
-![lyre](lyre.jpeg)
+<img src="lyre.jpeg" alt="lyre" width="450"/>
 
 Transformer-based multimodal integration of H&E-stained whole-slide images and their corresponding synoptic pathology reports to regress prognostic/predictive scores for cancer. See the preprint applying this to Oncotype scores [here]().
 
