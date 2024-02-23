@@ -89,7 +89,10 @@ Predictions are stored as individual `.pt` files in `preds/linguistic/{split}` n
 ### train multimodal model
 `python orpheus/main.py fit --config orpheus/multimodal/config.yaml`
 
-Logs and checkpoints are in `outputs/multimodal-models`. Select the checkpoint with the lowest validation loss.
+Logs and checkpoints are in `outputs/multimodal-models`. Select the checkpoint with the lowest validation loss, and compare against unimodal models in W&B.
+
+<img src="wnb_chart.png" width="450"/>
+
 
 ## embed with multimodal model
 ```bash
