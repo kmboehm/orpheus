@@ -55,16 +55,16 @@ If you like, you can create an example dataset in `orpheus/scratch` using `pytho
 ### Log in to W&B
 `wandb login`
 
-## train
+## Train
 
-### train vision model
+### Train vision model
 Adjust any parameters to suit your system in the config file.
 
 `python orpheus/main.py fit --config orpheus/vision/config.yaml`
 
 Logs are in `outputs/training_logs`, and checkpoints are in `outputs/vision-models`. Select the checkpoint with the lowest validation loss.
 
-### embed with vision model
+### Generate visual embeddings
 ```bash
 wandb disabled
 python orpheus/main.py predict --config orpheus/vision/config.yaml --ckpt_path outputs/vision-models/{best_model}.ckpt
@@ -73,12 +73,12 @@ wandb enabled
 
 Predictions are stored as individual `.pt` files in `preds/visual/{split}` named by `case_id` in the dataframe you provide, and the whole-slide embeddings are stored where you designate in the `output_visual_embedding_path`.
 
-### train language model
+### Train language model
 `python orpheus/language/train.py --df_path scratch/example.csv`
 
 Logs and checkpoints are in `outputs/text-models`. Select the checkpoint with the lowest validation loss.
 
-### embed with language model
+### Generate linguistic embeddings
 ```bash
 wandb disabled
 python orpheus/language/infer.py --df_path scratch/example.csv --ckpt_path outputs/text-models/{best_model}
@@ -86,7 +86,7 @@ wandb enabled
 ```
 Predictions are stored as individual `.pt` files in `preds/linguistic/{split}` named by `case_id` in the dataframe you provide, and the whole-slide embeddings are stored where you designate in the `output_linguistic_embedding_path`.
 
-### train multimodal model
+### Train multimodal model
 `python orpheus/main.py fit --config orpheus/multimodal/config.yaml`
 
 Logs and checkpoints are in `outputs/multimodal-models`. Select the checkpoint with the lowest validation loss, and compare against unimodal models in W&B.
@@ -94,7 +94,7 @@ Logs and checkpoints are in `outputs/multimodal-models`. Select the checkpoint w
 <img src="wnb_chart.png" width="450"/>
 
 
-### embed with multimodal model
+### Generate multimodal embeddings
 ```bash
 wandb disabled
 python orpheus/main.py predict --config orpheus/multimodal/config.yaml --ckpt_path outputs/multimodal-models/{best_model}.ckpt
@@ -103,12 +103,12 @@ wandb enabled
 
 Predictions are stored as individual `.pt` files in `preds/multimodal/{split}` named by `case_id` in the dataframe you provide, and the multimodal embeddings are stored where you designate in the `multimodal_embedding_path`.
 
-### align multimodal scores and gather all results
+### Align multimodal scores
 `python orpheus/multimodal/align.py --df_path scratch/example.csv --img_pred_dir preds/visual --lan_pred_dir preds/linguistic --mult_pred_dir preds/multimodal --output_df_path all_predictions.csv`
 
 Performs final alignment of multimodal scores and adds `pred_vis, pred_lan, pred_mul` to your initial dataframe, which it saves, e.g. at `all_predictions.csv` in this example
 
-## evaluate
+## Evaluate
 `python eval.py --pred_df_path all_predictions.csv`
 
 Generates `metrics.json` containing regression metrics for multimodal, visual, and linguistic models for training, validation, and test sets: r^2, mean average error with 95% C.I., concordance correlation coefficient with 95% C.I., Pearson correlation with 95% C.I. and p-value.
