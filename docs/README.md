@@ -107,3 +107,8 @@ Predictions are stored as individual `.pt` files in `preds/multimodal/{split}` n
 `python orpheus/multimodal/align.py --df_path scratch/example.csv --img_pred_dir preds/visual --lan_pred_dir preds/linguistic --mult_pred_dir preds/multimodal --output_df_path all_predictions.csv`
 
 Performs final alignment of multimodal scores and adds `pred_vis, pred_lan, pred_mul` to your initial dataframe, which it saves, e.g. at `all_predictions.csv` in this example
+
+## evaluate
+`python eval.py --pred_df_path all_predictions.csv`
+
+Generates `metrics.json` containing regression metrics for multimodal, visual, and linguistic models for training, validation, and test sets: r^2, mean average error with 95% C.I., concordance correlation coefficient with 95% C.I., Pearson correlation with 95% C.I. and p-value.
