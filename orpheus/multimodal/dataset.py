@@ -50,7 +50,7 @@ class MultimodalEmbeddingDataModule(pl.LightningDataModule):
         self.batch_size = batch_size
         self.save_hyperparameters()
 
-        self.df = pd.read_csv(dataframe_path)
+        self.df = pd.read_csv(dataframe_path, low_memory=False)
         self.df = self.df[self.df["output_multimodal_embedding_path"] != "NONE"]
         validate_dataframe(self.df)
 

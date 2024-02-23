@@ -20,6 +20,7 @@ def preprocess_function(examples):
 def load_dataset(df):
     # df = df[["text", "score", "case_id"]]
     df = df.rename(columns={"score": "label"})
+    df = df[["output_linguistic_embedding_path", "text", "label", "split", "case_id"]]
     return Dataset.from_pandas(df)
 
 TOKENIZER = AutoTokenizer.from_pretrained("tsantos/PathologyBERT")
