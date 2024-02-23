@@ -18,7 +18,7 @@ def save_outputs(outputs, output_emb_path, split, case_id):
     pred_dir = f"preds/linguistic/{split}"
     if not os.path.exists(pred_dir):
         os.makedirs(pred_dir)
-    torch.save(pred, f"{pred_dir}/{case_id}.pt")
+    torch.save(pred.cpu(), f"{pred_dir}/{case_id}.pt")
 
     hidden_states = outputs["hidden_states"]
     embedding = hidden_states[-1]  # 1, seq_len, 768

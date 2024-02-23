@@ -203,7 +203,7 @@ class TensorFusionNetwork(SimpleAttention):
         for i, emb_output_filename in enumerate(emb_output_filenames):
             torch.save(emb[i].cpu(), emb_output_filename)
         for i, y_hat_i in enumerate(y_hat):
-            prediction_file_name = os.path.join(self.preds_output_dir, batch["split"][i], f"{batch['case_id'][i]}.txt")
+            prediction_file_name = os.path.join(self.preds_output_dir, batch["split"][i], f"{batch['case_id'][i]}.pt")
             if not os.path.exists(os.path.dirname(prediction_file_name)):
                 os.makedirs(os.path.dirname(prediction_file_name))
             torch.save(y_hat_i.cpu(), prediction_file_name)

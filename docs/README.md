@@ -94,7 +94,7 @@ Logs and checkpoints are in `outputs/multimodal-models`. Select the checkpoint w
 <img src="wnb_chart.png" width="450"/>
 
 
-## embed with multimodal model
+### embed with multimodal model
 ```bash
 wandb disabled
 python orpheus/main.py predict --config orpheus/multimodal/config.yaml --ckpt_path outputs/multimodal-models/{best_model}.ckpt
@@ -102,3 +102,8 @@ wandb enabled
 ```
 
 Predictions are stored as individual `.pt` files in `preds/multimodal/{split}` named by `case_id` in the dataframe you provide, and the multimodal embeddings are stored where you designate in the `multimodal_embedding_path`.
+
+### align multimodal scores and gather all results
+`python orpheus/multimodal/align.py --df_path scratch/example.csv --img_pred_dir preds/visual --lan_pred_dir preds/linguistic --mult_pred_dir preds/multimodal --output_df_path all_predictions.csv`
+
+Performs final alignment of multimodal scores and adds `pred_vis, pred_lan, pred_mul` to your initial dataframe, which it saves, e.g. at `all_predictions.csv` in this example
