@@ -23,21 +23,14 @@ for file_name in file_names:
     file_name_pt = file_name.replace('.h5', '.pt')
     torch.save(embeddings, os.path.join("pt_files", file_name_pt))
 ```
+
 ### Install Orpheus
-
-#### Install Torch
-- Follow instructions at: https://pytorch.org/get-started/locally/
-
-#### Install other dependencies
 ```bash
-conda install einops lightning wandb torchmetrics pandas numpy h5py datasets transformers evaluate scipy scikit-learn seaborn matplotlib statsmodels -c huggingface -c conda-forge
+conda install pytorch torchvision torchaudio pytorch-cuda=12.1 einops lightning wandb torchmetrics pandas numpy h5py datasets transformers evaluate scipy scikit-learn seaborn matplotlib statsmodels accelerate tokenizers=0.13.02 -c pytorch -c nvidia -c huggingface -c conda-forge
 
 pip install -U 'jsonargparse[signatures]>=4.26.1'
-
-pip install accelerate -U
-
-pip install "dill<0.3.5"
 ```
+As needed, modify the PyTorch-related packages per the instructions at: https://pytorch.org/get-started/locally/
 
 ### Prepare data
 - expects .csv file with columns:
