@@ -104,4 +104,4 @@ Performs final alignment of multimodal scores and adds `pred_vis, pred_lan, pred
 ## Evaluate
 `python eval.py --pred_df_path all_predictions.csv`
 
-Generates `metrics.json` containing regression metrics for multimodal, visual, and linguistic models for training, validation, and test sets: r^2, mean average error with 95% C.I., concordance correlation coefficient with 95% C.I., Pearson correlation with 95% C.I. and p-value.
+Generates `metrics.json` containing regression metrics for multimodal, visual, and linguistic models for training, validation, and test sets: r^2, mean average error with 95% C.I., concordance correlation coefficient with 95% C.I., Pearson correlation with 95% C.I. and p-value. Also generates one bar plot for each metric at `plots/{metric}`.
