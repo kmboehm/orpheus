@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
+plt.rcParams.update({'font.size': 7, 'font.family': 'sans-serif', 'font.sans-serif': 'arial'})
 
 def bootstrap_ci(preds, truth, metric_function, n_bootstraps=1000, ci=0.95):
     """
@@ -100,7 +101,7 @@ def plot_barplot(df, metric):
     pal = sns.color_palette("cubehelix", 3)
     palette_dict = {"L": pal[0], "V": pal[1], "VL": pal[2]}
 
-    fig = plt.figure(figsize=(2.65, 2.25), tight_layout=True)
+    fig = plt.figure(figsize=(1.75, 2.5), tight_layout=True)
     g = sns.barplot(
         data=df,
         x="Split",
@@ -136,13 +137,14 @@ def plot_barplot(df, metric):
             linewidth=0.5,
         )
 
-    plt.legend(title="", loc="center left", bbox_to_anchor=(1.01, 0.5))
+    plt.legend(title="", loc="upper center", bbox_to_anchor=(0.5, -0.25), ncol=3, columnspacing=0.5)
+    plt.subplots_adjust(bottom=0.3)
     ax = plt.gca()
-    sns.move_legend(ax, labelspacing=0, loc="center left", bbox_to_anchor=(1.01, 0.9))
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
 
     plt.ylabel(metric)
+    # plt.tight_layout()
     plt.savefig(f"plots/{metric}.png", dpi=300)
     plt.close()
 
